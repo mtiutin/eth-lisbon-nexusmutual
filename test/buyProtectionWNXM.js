@@ -140,7 +140,7 @@ contract('Buy Protection Distributor', (accounts) => {
         // return;
         //mint some NXM:
         //add admin address as a member.required to buy NXM
-        await selfKYC.joinMutual.sendTransaction(admin,{value:toBN('2000000000000000')});
+        // await selfKYC.joinMutual.sendTransaction(admin,{value:toBN('2000000000000000')});
         await selfKYC.joinMutual.sendTransaction(wnxmToken.address,{value:toBN('2000000000000000')});
         // await selfKYC.approveKyc.sendTransaction(wnxmToken.address);
         await pool1.buyNXM.sendTransaction(toBN(0),{from:admin, value:toBN(1).mul(decimals)});
@@ -430,8 +430,7 @@ contract('Buy Protection Distributor', (accounts) => {
             //buy with wrapped NXM
             await wnxmToken.approve(distributor.address,maxPriceWithFee,{from:admin});
 
-            await expectRevert(
-                distributor.buyCoverWNXM(
+            txNXM = await distributor.buyCoverWNXM(
                     coverData.contractAddress,
                     coverData.asset,
                     amountInWei,
@@ -442,16 +441,15 @@ contract('Buy Protection Distributor', (accounts) => {
                     {
                         // value: priceWithFee,
                         from:admin
-                    }),
-                'revert'
-            ); 
+                    });
+            printEvents(txNXM,"buy wnxm");
 
         } else {
             //buy with pure NXM
             await nxmToken.approve(distributor.address,maxPriceWithFee,{from:admin});
 
-            await expectRevert(
-                distributor.buyCoverNXM(
+            // await expectRevert(
+            txNXM = await distributor.buyCoverNXM(
                     coverData.contractAddress,
                     coverData.asset,
                     amountInWei,
@@ -462,9 +460,9 @@ contract('Buy Protection Distributor', (accounts) => {
                     {
                         // value: priceWithFee,
                         from:admin
-                    }),
-                'revert'
-            ); 
+                    });
+            //     'revert'
+            // ); 
 
         }
 
@@ -485,21 +483,21 @@ contract('Buy Protection Distributor', (accounts) => {
         // price is deterministic right now. can set the max price to be equal with the actual price.
         const maxPriceWithFeeETH = priceWithFeeETH;
        
-        txNXM = await distributor.buyCover(
-            coverData.contractAddress,
-            coverData.asset,
-            amountInWei,
-            coverData.period,
-            COVER_TYPE,
-            maxPriceWithFeeETH,
-            data, 
-            {
-                value: priceWithFeeETH
-            });
+        // txNXM = await distributor.buyCover(
+        //     coverData.contractAddress,
+        //     coverData.asset,
+        //     amountInWei,
+        //     coverData.period,
+        //     COVER_TYPE,
+        //     maxPriceWithFeeETH,
+        //     data, 
+        //     {
+        //         value: priceWithFeeETH
+        //     });
 
 
-        const coverId = txNXM.logs[1].args.coverId.toString();
-        console.log(`Bought cover wth DAI successfully. cover id: ${coverId}`);
+        // const coverId = txNXM.logs[1].args.coverId.toString();
+        // console.log(`Bought cover wth DAI successfully. cover id: ${coverId}`);
   
     });
     

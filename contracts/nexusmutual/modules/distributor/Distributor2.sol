@@ -167,7 +167,7 @@ contract Distributor2 is ERC721, Ownable, ReentrancyGuard {
     emit CoverBought(coverId, msg.sender, contractAddress, feePercentage, coverPriceNXM);
     return coverId;
   }
-
+  
   /**
   * @dev buy cover for a coverable identified by its contractAddress
   * @param contractAddress contract address of coverable
@@ -227,8 +227,6 @@ contract Distributor2 is ERC721, Ownable, ReentrancyGuard {
     emit CoverBought(coverId, msg.sender, contractAddress, feePercentage, coverPriceNXM);
     return coverId;
   }
-
-
 
   function _buyCoverNXM (
     address contractAddress,
@@ -567,7 +565,7 @@ contract Distributor2 is ERC721, Ownable, ReentrancyGuard {
   }
 
   function convertToLegacyQuote(uint sumAssured, bytes memory data, address asset)
-    internal view returns (uint[] memory coverDetails, uint8, bytes32, bytes32) {
+    internal  returns (uint[] memory coverDetails, uint8, bytes32, bytes32) {
     (
     uint coverPrice,
     uint coverPriceNXM,
@@ -579,7 +577,14 @@ contract Distributor2 is ERC721, Ownable, ReentrancyGuard {
     ) = abi.decode(data, (uint, uint, uint, uint, uint8, bytes32, bytes32));
     coverDetails = new uint[](5);
     // convert from wei to units
-    coverDetails[0] = sumAssured - (10 ** assetDecimals(asset));
+
+    // emit TestEvent("sumAssured2", sumAssured);
+    // emit TestEvent("assetDecimals(asset)", assetDecimals(asset));
+    // emit TestEventAddr("asset", asset);
+    // emit TestEvent("(10 ** assetDecimals(asset))", (10 ** assetDecimals(asset)));
+    // emit TestEvent("(sumAssured - (10 ** assetDecimals(asset)))", (sumAssured - (10 ** assetDecimals(asset))));
+
+    coverDetails[0] = sumAssured / (10 ** assetDecimals(asset));
     coverDetails[1] = coverPrice;
     coverDetails[2] = coverPriceNXM;
     coverDetails[3] = expiresAt;
