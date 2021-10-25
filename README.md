@@ -1,6 +1,6 @@
 # Buying Nexus Mutual covers for wNXM
 
-Nexus Mutual coves can be purchased from official web site [here](https://app.nexusmutual.io/cover). You can pay with ETH/DAI or native NXM token. The price would be identical. But there is also a community driven wNXM token which is bound to native NXM at constant 1:1 ratio. Unlike native NXM which requires it's holders to come through KYC procedure, wNXM has no that kind of restrictions and is openly traded on DEXes at much lower price. So, buying protections for wNXM could be much cheaper.
+Nexus Mutual coves can be purchased from official web site [here](https://app.nexusmutual.io/cover). You can pay with ETH/DAI or native NXM token. The price would be identical. But there is also a community driven wNXM token which is bound to native NXM at constant 1:1 ratio. Unlike native NXM which requires its holders to come through KYC procedure, wNXM has no that kind of restrictions and is openly traded on DEXes at much lower price. So, buying protections for wNXM could be much cheaper.
 
 # Implementation details
 
