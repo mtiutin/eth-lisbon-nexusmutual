@@ -184,190 +184,166 @@ contract('Buy Protection Distributor', (accounts) => {
         // printEvents(addLiquidityRes,"Add liquidity");
     });
 
-    // it('BuyProtection ETH', async () => {
-    //     // return;
+    it('BuyProtection ETH', async () => {
+        // return;
 
-    //     console.log({
-    //         DISTRIBUTOR_ADDRESS,
-    //         API_REQUEST_ORIGIN,
-    //     });
+        console.log({
+            DISTRIBUTOR_ADDRESS,
+            API_REQUEST_ORIGIN,
+        });
 
-    //     const headers = {
-    //         Origin: API_REQUEST_ORIGIN,
-    //     };
+        const headers = {
+            Origin: API_REQUEST_ORIGIN,
+        };
 
-    //     // Setup your cover data.
-    //     const coverData = {
-    //         coverAmount: '1', // ETH in units not wei
-    //         currency: 'ETH',
-    //         asset: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // stands for ETH
-    //         period: '111', // days
-    //         contractAddress: '0x0000000000000000000000000000000000000005', // the contract you will be buying cover for
-    //     };
+        // Setup your cover data.
+        const coverData = {
+            coverAmount: '1', // ETH in units not wei
+            currency: 'ETH',
+            asset: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // stands for ETH
+            period: '111', // days
+            contractAddress: '0x0000000000000000000000000000000000000005', // the contract you will be buying cover for
+        };
 
-    //     // URL to request a quote for.
-    //     const quoteURL = 'https://api.staging.nexusmutual.io/v1/quote?' +
-    //         `coverAmount=${coverData.coverAmount}&currency=${coverData.currency}&period=${coverData.period}&contractAddress=${coverData.contractAddress}`;
+        // URL to request a quote for.
+        const quoteURL = 'https://api.staging.nexusmutual.io/v1/quote?' +
+            `coverAmount=${coverData.coverAmount}&currency=${coverData.currency}&period=${coverData.period}&contractAddress=${coverData.contractAddress}`;
 
-    //     console.log(quoteURL);
+        console.log(quoteURL);
 
-    //     const quote = await fetch(quoteURL, { headers }).then(r => r.json());
-    //     console.log(quote);
+        const quote = await fetch(quoteURL, { headers }).then(r => r.json());
+        console.log(quote);
 
-    //     // encode the signature result in the data field
-    //     const data = web3.eth.abi.encodeParameters(
-    //         ['uint', 'uint', 'uint', 'uint', 'uint8', 'bytes32', 'bytes32'],
-    //         [quote.price, quote.priceInNXM, quote.expiresAt, quote.generatedAt, quote.v, quote.r, quote.s],
-    //     );
+        // encode the signature result in the data field
+        const data = web3.eth.abi.encodeParameters(
+            ['uint', 'uint', 'uint', 'uint', 'uint8', 'bytes32', 'bytes32'],
+            [quote.price, quote.priceInNXM, quote.expiresAt, quote.generatedAt, quote.v, quote.r, quote.s],
+        );
 
         
 
-    //     // add the fee on top of the base price
-    //     const feePercentage = await distributor.feePercentage();
-    //     const basePrice = new BN(quote.price);
+        // add the fee on top of the base price
+        const feePercentage = await distributor.feePercentage();
+        const basePrice = new BN(quote.price);
         
 
-    //     const priceWithFee = basePrice.mul(feePercentage).divn(10000).add(basePrice);
+        const priceWithFee = basePrice.mul(feePercentage).divn(10000).add(basePrice);
 
-    //     // quote-api signed quotes are cover type = 0; only one cover type is supported at this point.
-    //     const COVER_TYPE = 0;
+        // quote-api signed quotes are cover type = 0; only one cover type is supported at this point.
+        const COVER_TYPE = 0;
 
-    //     const amountInWei = ether(coverData.coverAmount.toString());
+        const amountInWei = ether(coverData.coverAmount.toString());
 
-    //     console.log({
-    //         feePercentage: feePercentage.toString(),
-    //         priceWithFee: priceWithFee.toString(),
-    //         amountInWei: amountInWei.toString(),
-    //         COVER_TYPE,
-    //     });
+        console.log({
+            feePercentage: feePercentage.toString(),
+            priceWithFee: priceWithFee.toString(),
+            amountInWei: amountInWei.toString(),
+            COVER_TYPE,
+        });
 
-    //     // price is deterministic right now. can set the max price to be equal with the actual price.
-    //     const maxPriceWithFee = priceWithFee;
-    //     // priceWithFee = 0;
+        // price is deterministic right now. can set the max price to be equal with the actual price.
+        const maxPriceWithFee = priceWithFee;
+        // priceWithFee = 0;
 
-    //     // execute the buy cover operation on behalf of the user.
-    //     // console.log("data:");
-    //     // console.log(coverData.contractAddress.toString());
-    //     // console.log(coverData.asset.toString());
-    //     // console.log(amountInWei.toString());
-    //     // console.log(coverData.period.toString());
-    //     // console.log(COVER_TYPE);
-    //     // console.log(maxPriceWithFee.toString());
-    //     // console.log(data.toString('hex'));
-    //     // console.log(priceWithFee.toString());
+        const tx = await distributor.buyCover(
+            coverData.contractAddress,
+            coverData.asset,
+            amountInWei,
+            coverData.period,
+            COVER_TYPE,
+            maxPriceWithFee,
+            data, 
+            {
+                value: priceWithFee
+            });
 
-    //     const tx = await distributor.buyCover(
-    //         coverData.contractAddress,
-    //         coverData.asset,
-    //         amountInWei,
-    //         coverData.period,
-    //         COVER_TYPE,
-    //         maxPriceWithFee,
-    //         data, 
-    //         {
-    //             value: priceWithFee
-    //         });
-
-    //     const coverId = tx.logs[1].args.coverId.toString();
-    //     console.log(`Bought cover with ETH successfully. cover id: ${coverId}`);
+        const coverId = tx.logs[1].args.coverId.toString();
+        console.log(`Bought cover with ETH successfully. cover id: ${coverId}`);
   
-    // });
+    });
 
-    // it('BuyProtection with DAI', async () => {
-    //     // return;
+    it('BuyProtection with DAI', async () => {
+        // return;
 
-    //     console.log({
-    //         DISTRIBUTOR_ADDRESS,
-    //         API_REQUEST_ORIGIN,
-    //     });
+        console.log({
+            DISTRIBUTOR_ADDRESS,
+            API_REQUEST_ORIGIN,
+        });
 
-    //     const headers = {
-    //         Origin: API_REQUEST_ORIGIN,
-    //     };
+        const headers = {
+            Origin: API_REQUEST_ORIGIN,
+        };
 
-    //     // Setup your cover data.
-    //     const coverData = {
-    //         coverAmount: '1', // ETH in units not wei
-    //         currency: 'DAI',
-    //         asset: DAI_ADDRESS, // stands for DAI
-    //         period: '111', // days
-    //         contractAddress: '0x0000000000000000000000000000000000000006', // the contract you will be buying cover for
-    //     };
+        // Setup your cover data.
+        const coverData = {
+            coverAmount: '1', // ETH in units not wei
+            currency: 'DAI',
+            asset: DAI_ADDRESS, // stands for DAI
+            period: '111', // days
+            contractAddress: '0x0000000000000000000000000000000000000006', // the contract you will be buying cover for
+        };
 
-    //     // URL to request a quote for.
-    //     const quoteURL = 'https://api.staging.nexusmutual.io/v1/quote?' +
-    //         `coverAmount=${coverData.coverAmount}&currency=${coverData.currency}&period=${coverData.period}&contractAddress=${coverData.contractAddress}`;
+        // URL to request a quote for.
+        const quoteURL = 'https://api.staging.nexusmutual.io/v1/quote?' +
+            `coverAmount=${coverData.coverAmount}&currency=${coverData.currency}&period=${coverData.period}&contractAddress=${coverData.contractAddress}`;
 
-    //     console.log(quoteURL);
+        console.log(quoteURL);
 
-    //     const quote = await fetch(quoteURL, { headers }).then(r => r.json());
-    //     console.log(quote);
+        const quote = await fetch(quoteURL, { headers }).then(r => r.json());
+        console.log(quote);
 
-    //     // encode the signature result in the data field
-    //     const data = web3.eth.abi.encodeParameters(
-    //         ['uint', 'uint', 'uint', 'uint', 'uint8', 'bytes32', 'bytes32'],
-    //         [quote.price, quote.priceInNXM, quote.expiresAt, quote.generatedAt, quote.v, quote.r, quote.s],
-    //     );
+        // encode the signature result in the data field
+        const data = web3.eth.abi.encodeParameters(
+            ['uint', 'uint', 'uint', 'uint', 'uint8', 'bytes32', 'bytes32'],
+            [quote.price, quote.priceInNXM, quote.expiresAt, quote.generatedAt, quote.v, quote.r, quote.s],
+        );
 
+        // add the fee on top of the base price
+        const feePercentage = await distributor.feePercentage();
+        const basePrice = new BN(quote.price);
         
+        let priceWithFee = basePrice.mul(feePercentage).divn(10000).add(basePrice);
 
-    //     // add the fee on top of the base price
-    //     const feePercentage = await distributor.feePercentage();
-    //     const basePrice = new BN(quote.price);
-        
-    //     let priceWithFee = basePrice.mul(feePercentage).divn(10000).add(basePrice);
+        // quote-api signed quotes are cover type = 0; only one cover type is supported at this point.
+        const COVER_TYPE = 0;
 
-    //     // quote-api signed quotes are cover type = 0; only one cover type is supported at this point.
-    //     const COVER_TYPE = 0;
+        const amountInWei = ether(coverData.coverAmount.toString());
 
-    //     const amountInWei = ether(coverData.coverAmount.toString());
+        console.log({
+            feePercentage: feePercentage.toString(),
+            priceWithFee: priceWithFee.toString(),
+            amountInWei: amountInWei.toString(),
+            COVER_TYPE,
+        });
 
-    //     console.log({
-    //         feePercentage: feePercentage.toString(),
-    //         priceWithFee: priceWithFee.toString(),
-    //         amountInWei: amountInWei.toString(),
-    //         COVER_TYPE,
-    //     });
+        // price is deterministic right now. can set the max price to be equal with the actual price.
+        const maxPriceWithFee = priceWithFee;
 
-    //     // price is deterministic right now. can set the max price to be equal with the actual price.
-    //     const maxPriceWithFee = priceWithFee;
+        let daiToken = await ERC20Detailed.at(DAI_ADDRESS);
+        console.log("DAI Balance = ",(await daiToken.balanceOf.call(admin)).toString());
+        console.log("Price with fee: ",maxPriceWithFee.toString());
 
-    //     // // execute the buy cover operation on behalf of the user.
-    //     // console.log("data:");
-    //     // console.log(coverData.contractAddress.toString());
-    //     // console.log(coverData.asset.toString());
-    //     // console.log(amountInWei.toString());
-    //     // console.log(coverData.period.toString());
-    //     // console.log(COVER_TYPE);
-    //     // console.log(maxPriceWithFee.toString());
-    //     // console.log(data.toString('hex'));
-    //     // console.log(priceWithFee.toString());
+        await daiToken.approve(distributor.address,maxPriceWithFee,{from:admin});
 
-    //     let daiToken = await ERC20Detailed.at(DAI_ADDRESS);
-    //     console.log("DAI Balance = ",(await daiToken.balanceOf.call(admin)).toString());
-    //     console.log("Price with fee: ",maxPriceWithFee.toString());
+        const tx = await distributor.buyCover(
+            coverData.contractAddress,
+            coverData.asset,
+            amountInWei,
+            coverData.period,
+            COVER_TYPE,
+            maxPriceWithFee,
+            data, 
+            {
+                // value: priceWithFee,
+                from:admin
+            });
 
-    //     await daiToken.approve(distributor.address,maxPriceWithFee,{from:admin});
-
-    //     const tx = await distributor.buyCover(
-    //         coverData.contractAddress,
-    //         coverData.asset,
-    //         amountInWei,
-    //         coverData.period,
-    //         COVER_TYPE,
-    //         maxPriceWithFee,
-    //         data, 
-    //         {
-    //             // value: priceWithFee,
-    //             from:admin
-    //         });
-
-    //     const coverId = tx.logs[1].args.coverId.toString();
-    //     console.log(`Bought cover wth DAI successfully. cover id: ${coverId}`);
+        const coverId = tx.logs[1].args.coverId.toString();
+        console.log(`Bought cover wth DAI successfully. cover id: ${coverId}`);
   
-    // });
+    });
 
-    it('BuyProtection NXM', async () => {
+    it('BuyProtection WNXM', async () => {
              
 
         const headers = {
@@ -465,39 +441,6 @@ contract('Buy Protection Distributor', (accounts) => {
             // ); 
 
         }
-
-        //buy cover with ETH with the same quotation
-        
-        const basePriceETH = new BN(quote.price);
-        
-
-        const priceWithFeeETH = basePriceETH.mul(feePercentage).divn(10000).add(basePriceETH);
-
-        console.log("ETHDATA ", {
-            feePercentage: feePercentage.toString(),
-            priceWithFee: priceWithFeeETH.toString(),
-            amountInWei: amountInWei.toString(),
-            COVER_TYPE,
-        });
-
-        // price is deterministic right now. can set the max price to be equal with the actual price.
-        const maxPriceWithFeeETH = priceWithFeeETH;
-       
-        // txNXM = await distributor.buyCover(
-        //     coverData.contractAddress,
-        //     coverData.asset,
-        //     amountInWei,
-        //     coverData.period,
-        //     COVER_TYPE,
-        //     maxPriceWithFeeETH,
-        //     data, 
-        //     {
-        //         value: priceWithFeeETH
-        //     });
-
-
-        // const coverId = txNXM.logs[1].args.coverId.toString();
-        // console.log(`Bought cover wth DAI successfully. cover id: ${coverId}`);
   
     });
     

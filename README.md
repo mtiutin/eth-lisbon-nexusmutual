@@ -14,6 +14,7 @@ The flow how to buy Nexus Mutual cover with wNXM using Distributor2 contract:
 4. call buyCoverWNXM and feed quotation data. 
 5. Get an NFT token with protection ID (you can use it to deal with your protection via Distributor2 contract). 
 
+This flow is implemented in buyProtectionWNXM.js test. 
 # Restrictions
 
 Distributor is a contract that operates native NXM tokens. It has to be whitelisted to be able to do that, which requires owner KYC. Be ready to provide your documents in case you want to have your own Distributor instance in mainnet! 
