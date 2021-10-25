@@ -23,14 +23,14 @@ Distributor is a contract that operates native NXM tokens. It has to be whitelis
 
 Currently this project code is deployed to Kovan only. 
 
-Distributor2 contract: [0x61aD80c1d39B0d1390E8D66935e39Eb5e4fFA138](https://www.notion.so/d39b0d1390e8d66935e39eb5e4ffa138)
+Distributor2 contract: [0x61aD80c1d39B0d1390E8D66935e39Eb5e4fFA138](https://kovan.etherscan.io/address/0x61aD80c1d39B0d1390E8D66935e39Eb5e4fFA138)
 
-Example of the transaction buying Nexus cover for wNXM: [0x4a73c95507c5b5a7109dfbe78184dd632b76f57be54bf336ee28f8c7dca03007](https://www.notion.so/2b76f57be54bf336ee28f8c7dca03007)
+Example of the transaction buying Nexus cover for wNXM: [0x4a73c95507c5b5a7109dfbe78184dd632b76f57be54bf336ee28f8c7dca03007](https://kovan.etherscan.io/tx/0x4a73c95507c5b5a7109dfbe78184dd632b76f57be54bf336ee28f8c7dca03007)
 
 There is no any DEX trading pairs for wNXM in Kovan. So, in order to grab some wNXM the one has to:
 
 1. whitelist own address with SelfKYC provider by invoking JoinMutual function of [this smart contract](https://kovan.etherscan.io/address/0x74e0BE134744cA896196796A58203D090bc791fE#writeContract) and paying 0.002 ETH of entrance fee (this is required for the next step). 
-2. Buy NXM token with ETH from the Nexus pool by invoking buyNXM function and sending some ETH. Pool contract is [here](https://www.notion.so/f1144c34c061bff3222a431cec5aeec1)
-3. Wrap NXM to wNXM with wNXM contract by invoking wrap function of the smart contract [here](https://www.notion.so/8851cbde4a39a7ac6ee47bad0b050717).
+2. Buy NXM token with ETH from the Nexus pool by invoking buyNXM function and sending some ETH. Pool contract is [here](https://kovan.etherscan.io/address/0xe9b4a9c28851cbde4a39a7ac6ee47bad0b050717)
+3. Wrap NXM to wNXM with wNXM contract by invoking wrap function of the smart contract [here](https://kovan.etherscan.io/address/0xe9b4a9c28851cbde4a39a7ac6ee47bad0b050717).
 
 or... tweet me @ mtiutin if you need some wNXM tokens to play with.
